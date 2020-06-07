@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-import runHelp from '../help';
+import { getFilesDifference } from '../getTwoFilesDifference';
 
-runHelp();
+getFilesDifference();
