@@ -29,4 +29,7 @@ jobs:
 
     # Runs a single command using the runners shell
     - name: run-main-test
-      run: npx jest
+      run: make lint
+      # Runs a single command using the runners shell
+    - name: run-main-test
+      run: make test
