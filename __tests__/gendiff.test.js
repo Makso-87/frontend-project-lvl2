@@ -1,19 +1,19 @@
-import fs from 'fs';
-import path from 'path';
+// import fs from 'fs';
+// import path from 'path';
 import getDiff from '../src/index';
 
-const getFixturePath = (filename) => path.resolve(path.join('__fixtures__', filename));
-const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8');
-let file1;
-let file2;
+// const getFixturePath = (filename) => path.resolve(path.join('__fixtures__', filename));
+// const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8');
+// let file1;
+// let file2;
 
-beforeAll(() => {
-  file1 = readFile('before-after-result.txt').trim();
-  file2 = readFile('first-second-result.txt').trim();
-});
+// beforeAll(() => {
+//   file1 = readFile('before-after-result.txt').trim();
+//   file2 = readFile('first-second-result.txt').trim();
+// });
 
 test('gendiff', () => {
-  console.log(getFixturePath('first-second-result.txt'));
+  // console.log(getFixturePath('first-second-result.txt'));
   // console.log(file1);
   const string = getDiff('__fixtures__/before.json', '__fixtures__/after.json');
   expect(string).toEqual('{\
