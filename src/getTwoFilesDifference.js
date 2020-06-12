@@ -1,7 +1,7 @@
 import { program } from 'commander';
-import fs from 'fs';
-import path from 'path';
 import _ from 'lodash';
+import parseFile from './parsers';
+
 
 const accString = (arg1, arg2, acc, keyNum = 0) => {
   const file1 = arg1;
@@ -47,8 +47,8 @@ const addNewKeys = (arg1, arg2, acc, keyNum = 0) => {
 };
 
 const getDiff = (filepath1, filepath2) => {
-  const file1 = JSON.parse(fs.readFileSync(path.resolve(filepath1)));
-  const file2 = JSON.parse(fs.readFileSync(path.resolve(filepath2)));
+  const file1 = parseFile(filepath1);
+  const file2 = parseFile(filepath2);
 
   return addNewKeys(file1, file2, accString(file1, file2, '{'));
 };

@@ -1,5 +1,5 @@
-// import fs from 'fs';
-// import path from 'path';
+import fs from 'fs';
+import path from 'path';
 import getDiff from '../src/index';
 
 // const getFixturePath = (filename) => path.resolve(path.join('__fixtures__', filename));
@@ -8,14 +8,17 @@ import getDiff from '../src/index';
 // let file2;
 
 // beforeAll(() => {
-//   file1 = readFile('before-after-result.txt').trim();
-//   file2 = readFile('first-second-result.txt').trim();
+//   file1 = readFile('before-after-result.txt');
+//   file2 = readFile('first-second-result.txt');
 // });
 
-test('gendiff', () => {
+test('gendiff-json', () => {
   // console.log(getFixturePath('first-second-result.txt'));
   // console.log(file1);
-  const string = getDiff('__fixtures__/before.json', '__fixtures__/after.json');
+  // console.log(file1);
+  const string = getDiff('__fixtures__/before.yml', '__fixtures__/after.yml');
+  
+  // expect(string).toBe(file1);
   expect(string).toEqual('{\
 \n    host: hexlet.io\
 \n  + timeout: 20\
