@@ -13,11 +13,8 @@ import getDiff from '../src/index';
 // });
 
 test('gendiff-json', () => {
-  // console.log(getFixturePath('first-second-result.txt'));
-  // console.log(file1);
-  // console.log(file1);
-  const string = getDiff('__fixtures__/before.yml', '__fixtures__/after.yml');
-  
+  const string = getDiff('__fixtures__/before.json', '__fixtures__/after.json');
+
   // expect(string).toBe(file1);
   expect(string).toEqual('{\
 \n    host: hexlet.io\
@@ -28,9 +25,9 @@ test('gendiff-json', () => {
 \n  - follow: false\
 \n  + verbose: true\
 \n}');
-  // console.log(string);
+
   const newString = getDiff('__fixtures__/first.json', '__fixtures__/second.json');
-  // console.log(newString);
+
   expect(newString).toEqual('{\
 \n  - first-key: value1\
 \n  + second-key: false\
@@ -40,5 +37,35 @@ test('gendiff-json', () => {
 \n    milk: white\
 \n  + car: Tesla\
 \n  + bond: James Bond\
+\n}');
+});
+
+test('gendiff-yaml', () => {
+  const string = getDiff('__fixtures__/before.yml', '__fixtures__/after.yml');
+
+  // expect(string).toBe(file1);
+  expect(string).toEqual('{\
+\n    host: hexlet.io\
+\n  + timeout: 20\
+\n  - timeout: 50\
+\n  - proxy: 123.234.53.22\
+\n  + follow: true\
+\n  - follow: false\
+\n  + verbose: true\
+\n}');
+});
+
+test('gendiff-ini', () => {
+  const string = getDiff('__fixtures__/before.ini', '__fixtures__/after.ini');
+
+  // expect(string).toBe(file1);
+  expect(string).toEqual('{\
+\n    host: hexlet.io\
+\n  + timeout: 20\
+\n  - timeout: 50\
+\n  - proxy: 123.234.53.22\
+\n  + follow: true\
+\n  - follow: false\
+\n  + verbose: true\
 \n}');
 });
