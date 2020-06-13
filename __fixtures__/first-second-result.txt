@@ -1,10 +1,10 @@
 {
-    - first-key: value1
-    + second-key: false
-    - second-key: true
-    + coconut: 80
-    - coconut: 60
-      milk: white
-    + car: Tesla
-    + bond: James Bond
+  - first-key: value1
+  + second-key: false
+  - second-key: true
+  + coconut: 80
+  - coconut: 60
+    milk: white
+  + car: Tesla
+  + bond: James Bond
 }
