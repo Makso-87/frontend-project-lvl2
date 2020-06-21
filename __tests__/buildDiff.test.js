@@ -1,8 +1,8 @@
 import parseFile from '../src/parsers';
 import { buildDiff } from '../src/genDiff';
 
-const file1 = parseFile('/mnt/c/Users/МАКСИМ/Hexlet-Learning/GIT/hexletProjects/frontend-project-lvl2/__fixtures__/__recursive__/before.json');
-const file2 = parseFile('/mnt/c/Users/МАКСИМ/Hexlet-Learning/GIT/hexletProjects/frontend-project-lvl2/__fixtures__/__recursive__/after.json');
+const file1 = parseFile('__fixtures__/__recursive__/before.json');
+const file2 = parseFile('__fixtures__/__recursive__/after.json');
 
 test('buildDiff', () => {
   const res = buildDiff(file1, file2);
