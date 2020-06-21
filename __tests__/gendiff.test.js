@@ -1,35 +1,43 @@
 import fs from 'fs';
 import path from 'path';
-import getDiff from '../src/index';
+import genDiff from '../src/index';
 
 const getFixturePath = (filename) => path.resolve(path.join('__fixtures__', filename));
 const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8');
 let file1;
 let file2;
+let file3;
 
 beforeAll(() => {
   file1 = readFile('before-after-result.txt');
   file2 = readFile('first-second-result.txt');
+  file3 = readFile('__recursive__/before-after-result-recursive.txt');
 });
 
 test('gendiff-json', () => {
-  const string = getDiff('__fixtures__/before.json', '__fixtures__/after.json');
+  const string = genDiff('__fixtures__/before.json', '__fixtures__/after.json');
 
   expect(string).toEqual(file1);
 
-  const newString = getDiff('__fixtures__/first.json', '__fixtures__/second.json');
+  const newString = genDiff('__fixtures__/first.json', '__fixtures__/second.json');
 
   expect(newString).toEqual(file2);
 });
 
 test('gendiff-yaml', () => {
-  const string = getDiff('__fixtures__/before.yml', '__fixtures__/after.yml');
+  const string = genDiff('__fixtures__/before.yml', '__fixtures__/after.yml');
 
   expect(string).toEqual(file1);
 });
 
 test('gendiff-ini', () => {
-  const string = getDiff('__fixtures__/before.ini', '__fixtures__/after.ini');
+  const string = genDiff('__fixtures__/before.ini', '__fixtures__/after.ini');
 
   expect(string).toEqual(file1);
+});
+
+test('gendiff-json-recursive', () => {
+  const string = genDiff('__fixtures__/__recursive__/before.json', '__fixtures__/__recursive__/after.json');
+  console.log(string);
+  expect(string).toEqual(file3);
 });

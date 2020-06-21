@@ -1,3 +1,3 @@
-import { getDiff } from './getTwoFilesDifference';
+import { genDiff } from './genDiff';
 
-export default getDiff;
+export default genDiff;
