@@ -1,4 +1,4 @@
-import { getName } from '../src/formaters';
+import { getName } from '../src/auxiliaryFunctions';
 
 test('get-name', () => {
   const res = getName({key1: "val"});

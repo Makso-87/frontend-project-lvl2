@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import parseFile from './parsers';
-import { convertToFormat, isObject } from './formaters';
+import convertToFormat from './formaters/index';
+import { isObject } from './auxiliaryFunctions';
 
 const buildDiff = (file1, file2) => {
   const accObj = (arg1, arg2, acc = {}, keyNum = 0) => {

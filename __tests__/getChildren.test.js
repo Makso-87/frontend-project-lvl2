@@ -1,4 +1,4 @@
-import { getChildren } from '../src/formaters';
+import { getChildren } from '../src/auxiliaryFunctions';
 
 const obect = {
   timeout: 20,

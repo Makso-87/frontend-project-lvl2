@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { toStringJsonStyle } from '../src/formaters';
+import toStringJsonStyle from '../src/formaters';
 
 const getFixturePath = (filename) => path.resolve(path.join('__fixtures__', filename));
 const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8');
@@ -45,7 +45,7 @@ beforeAll(() => {
   file = readFile('__recursive__/before-after-result-recursive.txt');
 });
 
-test('convert-to-string', () => {
+test('formater-json', () => {
   const res = toStringJsonStyle(object);
 
   expect(res).toBe(file);

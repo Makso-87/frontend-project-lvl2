@@ -1,4 +1,4 @@
-import { isObject } from '../src/formaters';
+import { isObject } from '../src/auxiliaryFunctions';
 
 const obj = {
   key1: "val1",

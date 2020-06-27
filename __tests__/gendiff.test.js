@@ -7,11 +7,13 @@ const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8'
 let file1;
 let file2;
 let file3;
+let file4;
 
 beforeAll(() => {
   file1 = readFile('before-after-result.txt');
   file2 = readFile('first-second-result.txt');
   file3 = readFile('__recursive__/before-after-result-recursive.txt');
+  file4 = readFile('__recursive__/before-after-recursive-plain-format.txt');
 });
 
 test('gendiff-json', () => {
@@ -38,6 +40,10 @@ test('gendiff-ini', () => {
 
 test('gendiff-json-recursive', () => {
   const string = genDiff('__fixtures__/__recursive__/before.json', '__fixtures__/__recursive__/after.json');
-  console.log(string);
   expect(string).toEqual(file3);
+});
+
+test('gendiff-json-recursive-plain-format', () => {
+  const string = genDiff('__fixtures__/__recursive__/before.json', '__fixtures__/__recursive__/after.json', 'plain');
+  expect(string).toEqual(file4);
 });
