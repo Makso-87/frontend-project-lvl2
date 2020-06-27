@@ -19,10 +19,10 @@ const toStringPlainStyle = (object, path = '', acc = '', keyNum = 0) => {
       const cleanName = trimPlusAndMinus(key);
       const newPath = makeNewPath(path, cleanName);
 
-      const newValue = isString(object[nextKey]) ? `'${object[nextKey]}'` : object[nextKey];
+      const newValue = isString(object[key]) ? `'${object[key]}'` : object[key];
       const mostNewValue = isObject(newValue) ? '[complex value]' : newValue;
 
-      const oldValue = isString(object[key]) ? `'${object[key]}'` : object[key];
+      const oldValue = isString(object[nextKey]) ? `'${object[nextKey]}'` : object[nextKey];
       const newOldValue = isObject(oldValue) ? '[complex value]' : oldValue;
 
       const newAcc = `${acc}\nProperty '${newPath}' was changed from ${newOldValue} to ${mostNewValue}`;

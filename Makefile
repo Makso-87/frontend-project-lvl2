@@ -3,7 +3,7 @@ install:
 
 build:
 	sudo npm run build
-	
+
 start:
 	npx babel-node src/brain-games.js
 

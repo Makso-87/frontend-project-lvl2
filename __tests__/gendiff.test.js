@@ -40,10 +40,12 @@ test('gendiff-ini', () => {
 
 test('gendiff-json-recursive', () => {
   const string = genDiff('__fixtures__/__recursive__/before.json', '__fixtures__/__recursive__/after.json');
+  console.log(string)
   expect(string).toEqual(file3);
 });
 
 test('gendiff-json-recursive-plain-format', () => {
   const string = genDiff('__fixtures__/__recursive__/before.json', '__fixtures__/__recursive__/after.json', 'plain');
+  console.log(string)
   expect(string).toEqual(file4);
 });
