@@ -27,6 +27,8 @@ const isObject = (arg) => {
 
 const isString = (arg) => typeof arg === 'string';
 
+const trimPlusAndMinus = (string) => string.replace('+ ', '').replace('- ', '');
+
 export {
-  getChildren, getName, isObject, isString,
+  getChildren, getName, isObject, isString, trimPlusAndMinus,
 };

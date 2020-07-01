@@ -8,12 +8,14 @@ let file1;
 let file2;
 let file3;
 let file4;
+let file5;
 
 beforeAll(() => {
   file1 = readFile('before-after-result.txt');
   file2 = readFile('first-second-result.txt');
   file3 = readFile('__recursive__/before-after-result-recursive.txt');
   file4 = readFile('__recursive__/before-after-recursive-plain-format.txt');
+  file5 = readFile('__recursive__/before-after-recursive-json-format.json');
 });
 
 test('gendiff-json', () => {
@@ -40,12 +42,18 @@ test('gendiff-ini', () => {
 
 test('gendiff-json-recursive', () => {
   const string = genDiff('__fixtures__/__recursive__/before.json', '__fixtures__/__recursive__/after.json');
-  console.log(string)
+  console.log(string);
   expect(string).toEqual(file3);
 });
 
 test('gendiff-json-recursive-plain-format', () => {
   const string = genDiff('__fixtures__/__recursive__/before.json', '__fixtures__/__recursive__/after.json', 'plain');
-  console.log(string)
+
   expect(string).toEqual(file4);
+});
+
+test('gendiff-json-recursive-json-format', () => {
+  const string = genDiff('__fixtures__/__recursive__/before.json', '__fixtures__/__recursive__/after.json', 'json');
+  console.log(string);
+  expect(string).toEqual(file5);
 });

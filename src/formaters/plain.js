@@ -1,6 +1,6 @@
-import { isObject, isString } from '../auxiliaryFunctions';
+import { isObject, isString, trimPlusAndMinus } from '../auxiliaryFunctions';
 
-const trimPlusAndMinus = (string) => string.replace('+ ', '').replace('- ', '');
+
 
 const makeNewPath = (path, name) => `${path}.${name}`.replace('.', '');
 

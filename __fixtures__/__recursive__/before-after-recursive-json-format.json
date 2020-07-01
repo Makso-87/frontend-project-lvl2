@@ -1,0 +1,201 @@
+[
+  {
+    "name": "common",
+    "currentValue": {
+      "setting1": "Value 1",
+      "setting3": {
+        "key": "value"
+      },
+      "setting6": {
+        "key": "value",
+        "ops": "vops"
+      },
+      "follow": false,
+      "setting4": "blah blah",
+      "setting5": {
+        "key5": "value5"
+      }
+    },
+    "oldValue": {
+      "setting1": "Value 1",
+      "setting2": 200,
+      "setting3": true,
+      "setting6": {
+        "key": "value"
+      }
+    },
+    "wasChanged": true,
+    "wasAdded": false,
+    "wasDeleted": false,
+    "children": [
+      {
+        "name": "setting1",
+        "currentValue": "Value 1",
+        "oldValue": "Value 1",
+        "wasChanged": false,
+        "wasAdded": false,
+        "wasDeleted": false,
+        "children": false
+      },
+      {
+        "name": "setting2",
+        "currentValue": 200,
+        "oldValue": 200,
+        "wasChanged": false,
+        "wasAdded": false,
+        "wasDeleted": true,
+        "children": false
+      },
+      {
+        "name": "setting3",
+        "currentValue": {
+          "key": "value"
+        },
+        "oldValue": true,
+        "wasChanged": true,
+        "wasAdded": false,
+        "wasDeleted": false,
+        "children": false
+      },
+      {
+        "name": "setting6",
+        "currentValue": {
+          "key": "value",
+          "ops": "vops"
+        },
+        "oldValue": {
+          "key": "value"
+        },
+        "wasChanged": true,
+        "wasAdded": false,
+        "wasDeleted": false,
+        "children": [
+          {
+            "name": "key",
+            "currentValue": "value",
+            "oldValue": "value",
+            "wasChanged": false,
+            "wasAdded": false,
+            "wasDeleted": false,
+            "children": false
+          },
+          {
+            "name": "ops",
+            "currentValue": "vops",
+            "oldValue": "vops",
+            "wasChanged": false,
+            "wasAdded": true,
+            "wasDeleted": false,
+            "children": false
+          }
+        ]
+      },
+      {
+        "name": "follow",
+        "currentValue": false,
+        "oldValue": false,
+        "wasChanged": false,
+        "wasAdded": true,
+        "wasDeleted": false,
+        "children": false
+      },
+      {
+        "name": "setting4",
+        "currentValue": "blah blah",
+        "oldValue": "blah blah",
+        "wasChanged": false,
+        "wasAdded": true,
+        "wasDeleted": false,
+        "children": false
+      },
+      {
+        "name": "setting5",
+        "currentValue": {
+          "key5": "value5"
+        },
+        "oldValue": {
+          "key5": "value5"
+        },
+        "wasChanged": false,
+        "wasAdded": true,
+        "wasDeleted": false,
+        "children": false
+      }
+    ]
+  },
+  {
+    "name": "group1",
+    "currentValue": {
+      "baz": "bars",
+      "foo": "bar",
+      "nest": "str"
+    },
+    "oldValue": {
+      "baz": "bas",
+      "foo": "bar",
+      "nest": {
+        "key": "value"
+      }
+    },
+    "wasChanged": true,
+    "wasAdded": false,
+    "wasDeleted": false,
+    "children": [
+      {
+        "name": "baz",
+        "currentValue": "bars",
+        "oldValue": "bas",
+        "wasChanged": true,
+        "wasAdded": false,
+        "wasDeleted": false,
+        "children": false
+      },
+      {
+        "name": "foo",
+        "currentValue": "bar",
+        "oldValue": "bar",
+        "wasChanged": false,
+        "wasAdded": false,
+        "wasDeleted": false,
+        "children": false
+      },
+      {
+        "name": "nest",
+        "currentValue": "str",
+        "oldValue": {
+          "key": "value"
+        },
+        "wasChanged": true,
+        "wasAdded": false,
+        "wasDeleted": false,
+        "children": false
+      }
+    ]
+  },
+  {
+    "name": "group2",
+    "currentValue": {
+      "abc": 12345
+    },
+    "oldValue": {
+      "abc": 12345
+    },
+    "wasChanged": false,
+    "wasAdded": false,
+    "wasDeleted": true,
+    "children": false
+  },
+  {
+    "name": "group3",
+    "currentValue": {
+      "fee": 100500
+    },
+    "oldValue": {
+      "fee": 100500
+    },
+    "wasChanged": false,
+    "wasAdded": true,
+    "wasDeleted": false,
+    "children": false
+  }
+]
