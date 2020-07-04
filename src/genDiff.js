@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import parseFile from './parsers';
 import convertToFormat from './formaters/index';
-import { isObject } from './auxiliaryFunctions';
 
 const buildDiff = (file1, file2) => {
   const accObj = (arg1, arg2, acc = {}, keyNum = 0) => {
@@ -13,7 +12,7 @@ const buildDiff = (file1, file2) => {
     }
 
     if (_.has(arg2, key)) {
-      if (isObject(arg1[key]) && isObject(arg2[key])) {
+      if (_.isObject(arg1[key]) && _.isObject(arg2[key])) {
         acc[key] = buildDiff(arg1[key], arg2[key]);
         return accObj(arg1, arg2, acc, keyNum + 1);
       }

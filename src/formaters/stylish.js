@@ -1,4 +1,4 @@
-import { isObject } from '../auxiliaryFunctions';
+import _ from 'lodash';
 
 const toStringJsonStyle = (object, indent = 4, acc = '{', keyNum = 0) => {
   const keys = Object.keys(object);
@@ -10,7 +10,7 @@ const toStringJsonStyle = (object, indent = 4, acc = '{', keyNum = 0) => {
     return newAcc;
   }
 
-  if (isObject(object[key])) {
+  if (_.isObject(object[key])) {
     const newIndent = `${key}`[0] === '+' || `${key}`[0] === '-' ? indent - 2 : indent;
     const newAcc = `${acc}\n${' '.repeat(newIndent)}${key}: ${toStringJsonStyle(object[key], indent + 4)}`;
     return toStringJsonStyle(object, indent, newAcc, keyNum + 1);

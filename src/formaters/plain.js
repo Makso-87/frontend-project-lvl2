@@ -1,6 +1,5 @@
-import { isObject, isString, trimPlusAndMinus } from '../auxiliaryFunctions';
-
-
+import _ from 'lodash';
+import { isString, trimPlusAndMinus } from '../auxiliaryFunctions';
 
 const makeNewPath = (path, name) => `${path}.${name}`.replace('.', '');
 
@@ -20,17 +19,17 @@ const toStringPlainStyle = (object, path = '', acc = '', keyNum = 0) => {
       const newPath = makeNewPath(path, cleanName);
 
       const newValue = isString(object[key]) ? `'${object[key]}'` : object[key];
-      const mostNewValue = isObject(newValue) ? '[complex value]' : newValue;
+      const mostNewValue = _.isObject(newValue) ? '[complex value]' : newValue;
 
       const oldValue = isString(object[nextKey]) ? `'${object[nextKey]}'` : object[nextKey];
-      const newOldValue = isObject(oldValue) ? '[complex value]' : oldValue;
+      const newOldValue = _.isObject(oldValue) ? '[complex value]' : oldValue;
 
       const newAcc = `${acc}\nProperty '${newPath}' was changed from ${newOldValue} to ${mostNewValue}`;
       return toStringPlainStyle(object, path, newAcc, keyNum + 2);
     }
   }
 
-  if (key[0] === '+' && isObject(object[key])) {
+  if (key[0] === '+' && _.isObject(object[key])) {
     const cleanName = trimPlusAndMinus(key);
     const newPath = makeNewPath(path, cleanName);
     const newAcc = `${acc}\nProperty '${newPath}' was added with value: [complex value]`;
@@ -52,7 +51,7 @@ const toStringPlainStyle = (object, path = '', acc = '', keyNum = 0) => {
     return toStringPlainStyle(object, path, newAcc, keyNum + 1);
   }
 
-  if (isObject(object[key])) {
+  if (_.isObject(object[key])) {
     const newPath = `${path}.${key}`;
     const newAcc = `${acc.trimLeft()}${toStringPlainStyle(object[key], newPath)}`;
     return toStringPlainStyle(object, path, newAcc, keyNum + 1);

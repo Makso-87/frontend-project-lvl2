@@ -18,17 +18,10 @@ const getName = (obj) => {
   return result;
 };
 
-const isObject = (arg) => {
-  if (Array.isArray(arg)) return false;
-  if (arg === null) return false;
-
-  return typeof arg === 'object';
-};
-
 const isString = (arg) => typeof arg === 'string';
 
 const trimPlusAndMinus = (string) => string.replace('+ ', '').replace('- ', '');
 
 export {
-  getChildren, getName, isObject, isString, trimPlusAndMinus,
+  getChildren, getName, isString, trimPlusAndMinus,
 };

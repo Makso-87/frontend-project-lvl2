@@ -1,4 +1,5 @@
-import { isObject, trimPlusAndMinus } from '../auxiliaryFunctions';
+import _ from 'lodash';
+import { trimPlusAndMinus } from '../auxiliaryFunctions';
 
 const getOldValues = (obj, acc = {}, keyNum = 0) => {
   const keys = Object.keys(obj);
@@ -8,7 +9,7 @@ const getOldValues = (obj, acc = {}, keyNum = 0) => {
     return acc;
   }
 
-  if (isObject(obj[key]) && key[0] !== '+') {
+  if (_.isObject(obj[key]) && key[0] !== '+') {
     acc[trimPlusAndMinus(key)] = getOldValues(obj[key]);
 
     return getOldValues(obj, acc, keyNum + 1);
@@ -35,7 +36,7 @@ const getNewValues = (obj, acc = {}, keyNum = 0) => {
     return acc;
   }
 
-  if (isObject(obj[key]) && key[0] !== '-') {
+  if (_.isObject(obj[key]) && key[0] !== '-') {
     acc[trimPlusAndMinus(key)] = getNewValues(obj[key]);
 
     return getNewValues(obj, acc, keyNum + 1);
@@ -66,7 +67,7 @@ const isChanged = (obj, keyNum = 0) => {
     return true;
   }
 
-  if (isObject(obj[key])) {
+  if (_.isObject(obj[key])) {
     isChanged(obj);
   }
 
@@ -103,14 +104,14 @@ const toJsonStyle = (object, acc = [], keyNum = 0) => {
     }
   }
 
-  if (key[0] === '+' && isObject(object[key])) {
+  if (key[0] === '+' && _.isObject(object[key])) {
     newObject.wasAdded = true;
     acc.push(newObject);
 
     return toJsonStyle(object, acc, keyNum + 1);
   }
 
-  if (key[0] === '-' && isObject(object[key])) {
+  if (key[0] === '-' && _.isObject(object[key])) {
     newObject.wasDeleted = true;
     acc.push(newObject);
 
@@ -131,7 +132,7 @@ const toJsonStyle = (object, acc = [], keyNum = 0) => {
     return toJsonStyle(object, acc, keyNum + 1);
   }
 
-  if (isObject(object[key])) {
+  if (_.isObject(object[key])) {
     newObject.currentValue = getNewValues(object[key]);
     newObject.oldValue = getOldValues(object[key]);
     newObject.wasChanged = isChanged(object[key]);
