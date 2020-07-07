@@ -1,6 +1,4 @@
 import _ from 'lodash';
-import parseFile from './parsers';
-import convertToFormat from './formaters/index';
 
 const buildDiff = (file1, file2) => {
   const accObj = (arg1, arg2, acc = {}, keyNum = 0) => {
@@ -54,13 +52,4 @@ const buildDiff = (file1, file2) => {
   return addNewKeysObj(file1, file2, accObj(file1, file2, {}));
 };
 
-const genDiff = (filepath1, filepath2, format) => {
-  const file1 = parseFile(filepath1);
-  const file2 = parseFile(filepath2);
-
-  return convertToFormat(buildDiff(file1, file2), format);
-};
-
-export {
-  genDiff, buildDiff,
-};
+export default buildDiff;

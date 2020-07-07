@@ -1,9 +1,13 @@
 import _ from 'lodash';
-import { trimPlusAndMinus } from '../auxiliaryFunctions';
+import { convStrToNum, trimPlusAndMinus } from '../auxiliaryFunctions';
 
 const getOldValues = (obj, acc = {}, keyNum = 0) => {
   const keys = Object.keys(obj);
   const key = keys[keyNum];
+
+  if (!_.isObject(obj)) {
+    return convStrToNum(obj);
+  }
 
   if (keyNum > keys.length - 1) {
     return acc;
@@ -16,12 +20,12 @@ const getOldValues = (obj, acc = {}, keyNum = 0) => {
   }
 
   if (key[0] === '-') {
-    acc[trimPlusAndMinus(key)] = obj[key];
+    acc[trimPlusAndMinus(key)] = convStrToNum(obj[key]);
     return getOldValues(obj, acc, keyNum + 1);
   }
 
   if (key[0] !== '+') {
-    acc[trimPlusAndMinus(key)] = obj[key];
+    acc[trimPlusAndMinus(key)] = convStrToNum(obj[key]);
     return getOldValues(obj, acc, keyNum + 1);
   }
 
@@ -31,6 +35,10 @@ const getOldValues = (obj, acc = {}, keyNum = 0) => {
 const getNewValues = (obj, acc = {}, keyNum = 0) => {
   const keys = Object.keys(obj);
   const key = keys[keyNum];
+
+  if (!_.isObject(obj)) {
+    return convStrToNum(obj);
+  }
 
   if (keyNum > keys.length - 1) {
     return acc;
@@ -43,12 +51,12 @@ const getNewValues = (obj, acc = {}, keyNum = 0) => {
   }
 
   if (key[0] === '+') {
-    acc[trimPlusAndMinus(key)] = obj[key];
+    acc[trimPlusAndMinus(key)] = convStrToNum(obj[key]);
     return getNewValues(obj, acc, keyNum + 1);
   }
 
   if (key[0] !== '-') {
-    acc[trimPlusAndMinus(key)] = obj[key];
+    acc[trimPlusAndMinus(key)] = convStrToNum(obj[key]);
     return getNewValues(obj, acc, keyNum + 1);
   }
 
@@ -80,14 +88,13 @@ const toJsonStyle = (object, acc = [], keyNum = 0) => {
   const nextKey = keys[keyNum + 1];
 
   if (keyNum > keys.length - 1) {
-    const newAcc = acc;
-    return newAcc;
+    return acc;
   }
 
   const newObject = {
     name: trimPlusAndMinus(key),
-    currentValue: object[key],
-    oldValue: object[key],
+    currentValue: getNewValues(object[key]),
+    oldValue: getOldValues(object[key]),
     wasChanged: false,
     wasAdded: false,
     wasDeleted: false,
@@ -96,7 +103,7 @@ const toJsonStyle = (object, acc = [], keyNum = 0) => {
 
   if (nextKey !== undefined) {
     if (key[0] === '+' && nextKey[0] === '-') {
-      newObject.oldValue = object[nextKey];
+      newObject.oldValue = convStrToNum(object[nextKey]);
       newObject.wasChanged = true;
       acc.push(newObject);
 

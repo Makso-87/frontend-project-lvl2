@@ -1,3 +1,14 @@
+import _ from 'lodash';
+
+const convStrToNum = (arg) => {
+  if (_.isString(arg)) {
+    if (_.isNumber(Number(arg)) && !_.isNaN(Number(arg)) && !_.isNull(arg) && !_.isBoolean(arg)) {
+      return Number(arg);
+    }
+  }
+  return arg;
+};
+
 const getChildren = (obj) => {
   const keys = (typeof obj === 'object') ? Object.keys(obj) : [];
 
@@ -13,15 +24,10 @@ const getChildren = (obj) => {
   });
 };
 
-const getName = (obj) => {
-  const result = typeof obj === 'object' ? Object.keys(obj)[0] : '';
-  return result;
-};
-
-const isString = (arg) => typeof arg === 'string';
+const getName = (obj) => (typeof obj === 'object' ? Object.keys(obj)[0] : '');
 
 const trimPlusAndMinus = (string) => string.replace('+ ', '').replace('- ', '');
 
 export {
-  getChildren, getName, isString, trimPlusAndMinus,
+  getChildren, getName, trimPlusAndMinus, convStrToNum,
 };
