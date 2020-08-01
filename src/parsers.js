@@ -1,20 +1,29 @@
 import yaml from 'js-yaml';
 import ini from 'ini';
 
-const parseJSON = (data) => JSON.parse(data);
-const parseYAML = (data) => yaml.safeLoad(data);
-const parseINI = (data) => ini.decode(data);
+const parseTools = {
+  formats: {
+    json: 'json',
+    yaml: 'yml',
+    ini: 'ini',
+  },
+  parsers: {
+    parseJSON: (data) => JSON.parse(data),
+    parseYAML: (data) => yaml.safeLoad(data),
+    parseINI: (data) => ini.decode(data),
+  },
+};
 
-const parseFile = (data, extension) => {
-  if (extension === '.yml') {
-    return parseYAML(data);
+const parseFile = (data, formatName) => {
+  if (formatName === parseTools.formats.yaml) {
+    return parseTools.parsers.parseYAML(data);
   }
 
-  if (extension === '.ini') {
-    return parseINI(data);
+  if (formatName === parseTools.formats.ini) {
+    return parseTools.parsers.parseINI(data);
   }
 
-  return parseJSON(data);
+  return parseTools.parsers.parseJSON(data);
 };
 
 export default parseFile;

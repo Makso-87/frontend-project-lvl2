@@ -1,55 +1,84 @@
 import _ from 'lodash';
 
-const buildDiff = (file1, file2) => {
-  const accObj = (arg1, arg2, acc = {}, keyNum = 0) => {
-    const keys = Object.keys(arg1);
-    const key = keys[keyNum];
+const creatNode = (nameValue = 'not set', childrenValue = 'not set', statusValue = 'not set') => ({
+  type: 'node',
+  name: nameValue,
+  children: childrenValue,
+  status: statusValue,
+});
 
-    if (keyNum > keys.length - 1) {
-      return acc;
+const creatLeaf = (nameValue = 'not set', valueValue = 'not set', statusValue = 'not set') => ({
+  type: 'leaf',
+  name: nameValue,
+  value: valueValue,
+  status: statusValue,
+});
+
+const getUniqueKeys = (arg1, arg2) => {
+  const keys = Object.keys({ ...arg1, ...arg2 });
+  return _.uniq(keys);
+};
+
+const buildDiff = (arg1, arg2) => {
+  const uniqueKeys = getUniqueKeys(arg1, arg2);
+
+  const iter = (obj1, obj2, keyNum = 0) => {
+    const keys = getUniqueKeys(obj1, obj2);
+    const currentKey = keys[keyNum];
+
+    if (_.isObject(obj1[currentKey]) && _.isObject(obj2[currentKey])) {
+      const theseKeys = getUniqueKeys(obj1[currentKey], obj2[currentKey]);
+      const children = theseKeys.flatMap(
+        (key, index) => iter(obj1[currentKey], obj2[currentKey], index),
+      );
+      const status = 'changed';
+
+      return creatNode(currentKey, children, status);
     }
 
-    if (_.has(arg2, key)) {
-      if (_.isObject(arg1[key]) && _.isObject(arg2[key])) {
-        acc[key] = buildDiff(arg1[key], arg2[key]);
-        return accObj(arg1, arg2, acc, keyNum + 1);
+    if (_.has(obj1, currentKey) && _.has(obj2, currentKey)) {
+      if (obj1[currentKey] === obj2[currentKey]) {
+        const value = obj1[currentKey];
+        const status = 'not changed';
+        return creatLeaf(currentKey, value, status);
       }
 
-      if (arg1[key] === arg2[key]) {
-        acc[key] = arg1[key];
-        return accObj(arg1, arg2, acc, keyNum + 1);
-      }
-
-      if (arg1[key] !== arg2[key]) {
-        acc[`+ ${key}`] = arg2[key];
-        acc[`- ${key}`] = arg1[key];
-        return accObj(arg1, arg2, acc, keyNum + 1);
+      if (obj1[currentKey] !== obj2[currentKey]) {
+        const valueOld = obj1[currentKey];
+        const valueNew = obj2[currentKey];
+        const statusOld = 'removed';
+        const statusNew = 'added';
+        const rezult = [];
+        const oldUnit = _.isObject(obj1[currentKey]) ? creatNode(currentKey, valueOld, statusOld)
+          : creatLeaf(currentKey, valueOld, statusOld);
+        const newUnit = _.isObject(obj2[currentKey]) ? creatNode(currentKey, valueNew, statusNew)
+          : creatLeaf(currentKey, valueNew, statusNew);
+        rezult.push(oldUnit);
+        rezult.push(newUnit);
+        return rezult;
       }
     }
 
-    acc[`- ${key}`] = arg1[key];
+    if (!_.has(obj1, currentKey) && _.has(obj2, currentKey)) {
+      const value = obj2[currentKey];
+      const status = 'added';
+      const nodeUnit = _.isObject(obj2[currentKey]) ? creatNode(currentKey, value, status)
+        : creatLeaf(currentKey, value, status);
+      return nodeUnit;
+    }
 
-    return accObj(arg1, arg2, acc, keyNum + 1);
+    // if (_.has(obj1, currentKey) && !_.has(obj2, currentKey)) {
+    const value = obj1[currentKey];
+    const status = 'removed';
+    const nodeUnit = _.isObject(obj1[currentKey]) ? creatNode(currentKey, value, status)
+      : creatLeaf(currentKey, value, status);
+    return nodeUnit;
+    // }
   };
 
-  const addNewKeysObj = (arg1, arg2, acc = {}, keyNum = 0) => {
-    const keys = Object.keys(arg2);
-    const key = keys[keyNum];
-
-    if (keyNum > keys.length - 1) {
-      return acc;
-    }
-
-    if (_.has(arg1, key)) {
-      return addNewKeysObj(arg1, arg2, acc, keyNum + 1);
-    }
-
-    acc[`+ ${key}`] = arg2[key];
-
-    return addNewKeysObj(arg1, arg2, acc, keyNum + 1);
-  };
-
-  return addNewKeysObj(file1, file2, accObj(file1, file2, {}));
+  const result = uniqueKeys.flatMap((key, index) => iter(arg1, arg2, index));
+  console.log(result);
+  return result;
 };
 
 export default buildDiff;
