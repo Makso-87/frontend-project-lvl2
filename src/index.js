@@ -7,12 +7,12 @@ import convertToFormat from './formaters';
 const genDiff = (filepath1, filepath2, format) => {
   const data1 = fs.readFileSync(filepath1, 'utf-8');
   const data2 = fs.readFileSync(filepath2, 'utf-8');
-  const extension1 = path.extname(filepath1).replace('.', '');
-  const extension2 = path.extname(filepath1).replace('.', '');
-  const file1 = parseFile(data1, extension1);
-  const file2 = parseFile(data2, extension2);
+  const format1 = path.extname(filepath1).replace('.', '');
+  const format2 = path.extname(filepath1).replace('.', '');
+  const parsedData1 = parseFile(data1, format1);
+  const parsedData2 = parseFile(data2, format2);
 
-  return convertToFormat(buildDiff(file1, file2), format);
+  return convertToFormat(buildDiff(parsedData1, parsedData2), format);
 };
 
 export default genDiff;

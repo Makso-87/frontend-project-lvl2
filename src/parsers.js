@@ -2,28 +2,25 @@ import yaml from 'js-yaml';
 import ini from 'ini';
 
 const parseTools = {
-  formats: {
-    json: 'json',
-    yaml: 'yml',
-    ini: 'ini',
-  },
-  parsers: {
-    parseJSON: (data) => JSON.parse(data),
-    parseYAML: (data) => yaml.safeLoad(data),
-    parseINI: (data) => ini.decode(data),
-  },
+  json: JSON.parse,
+  yaml: yaml.safeLoad,
+  ini: ini.decode,
 };
 
 const parseFile = (data, formatName) => {
-  if (formatName === parseTools.formats.yaml) {
-    return parseTools.parsers.parseYAML(data);
+  if (formatName === 'yml') {
+    return parseTools.yaml(data);
   }
 
-  if (formatName === parseTools.formats.ini) {
-    return parseTools.parsers.parseINI(data);
+  if (formatName === 'ini') {
+    return parseTools.ini(data);
   }
 
-  return parseTools.parsers.parseJSON(data);
+  if (formatName === 'json') {
+    return parseTools.json(data);
+  }
+
+  throw new Error(`Unknown format: ${formatName}!`);
 };
 
 export default parseFile;

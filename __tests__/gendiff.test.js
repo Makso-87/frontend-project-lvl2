@@ -28,6 +28,7 @@ test.each([
 
   const actualStylishResult = genDiff(path1, path2, 'stylish');
   expect(actualStylishResult).toEqual(expectedStylishResult);
+  console.log(actualStylishResult);
 
   const actualPlainResult = genDiff(path1, path2, 'plain');
   expect(actualPlainResult).toEqual(expectedPlainResult);
