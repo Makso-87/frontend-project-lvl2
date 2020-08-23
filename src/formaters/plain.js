@@ -1,62 +1,37 @@
 import _ from 'lodash';
-import { trimPlusAndMinus } from '../auxiliaryFunctions';
 
-const makeNewPath = (path, name) => `${path}.${name}`.replace('.', '');
-
-const toStringPlainStyle = (object, path = '', acc = '', keyNum = 0) => {
-  const keys = Object.keys(object);
-  const key = keys[keyNum];
-  const nextKey = keys[keyNum + 1];
-
-  if (keyNum > keys.length - 1) {
-    return acc;
-  }
-
-  if (nextKey !== undefined) {
-    if (key[0] === '+' && nextKey[0] === '-') {
-      const cleanName = trimPlusAndMinus(key);
-      const newPath = makeNewPath(path, cleanName);
-
-      const newValue = _.isString(object[key]) ? `'${object[key]}'` : object[key];
-      const mostNewValue = _.isObject(newValue) ? '[complex value]' : newValue;
-
-      const oldValue = _.isString(object[nextKey]) ? `'${object[nextKey]}'` : object[nextKey];
-      const newOldValue = _.isObject(oldValue) ? '[complex value]' : oldValue;
-
-      const newAcc = `${acc}\nProperty '${newPath}' was changed from ${newOldValue} to ${mostNewValue}`;
-      return toStringPlainStyle(object, path, newAcc, keyNum + 2);
+const toStringPlainStyle = (tree, path = []) => {
+  const resultString = [];
+  tree.map((key) => {
+    if (key.status === 'nested') {
+      path.push(`${key.name}.`);
+      resultString.push(toStringPlainStyle(key.children, path));
+      path.pop();
     }
-  }
 
-  if (key[0] === '+' && _.isObject(object[key])) {
-    const cleanName = trimPlusAndMinus(key);
-    const newPath = makeNewPath(path, cleanName);
-    const newAcc = `${acc}\nProperty '${newPath}' was added with value: [complex value]`;
-    return toStringPlainStyle(object, path, newAcc, keyNum + 1);
-  }
+    if (key.status === 'removed') {
+      const pathString = `${path.join('')}${key.name}`;
+      resultString.push(`Property '${pathString}' was deleted`);
+    }
 
-  if (key[0] === '+') {
-    const cleanName = trimPlusAndMinus(key);
-    const newPath = makeNewPath(path, cleanName);
-    const newValue = _.isString(object[key]) ? `'${object[key]}'` : object[key];
-    const newAcc = `${acc}\nProperty '${newPath}' was added with value: ${newValue}`;
-    return toStringPlainStyle(object, path, newAcc, keyNum + 1);
-  }
+    if (key.status === 'added') {
+      const pathString = `${path.join('')}${key.name}`;
+      const value = _.isObject(key.value) ? '[complex value]' : key.value;
+      const typingValue = _.isBoolean(value) || _.isNumber(value) || value === '[complex value]' ? value : `'${key.value}'`;
+      resultString.push(`Property '${pathString}' was added with value: ${typingValue}`);
+    }
 
-  if (key[0] === '-') {
-    const cleanName = trimPlusAndMinus(key);
-    const newPath = makeNewPath(path, cleanName);
-    const newAcc = `${acc}\nProperty '${newPath}' was deleted`;
-    return toStringPlainStyle(object, path, newAcc, keyNum + 1);
-  }
+    if (key.status === 'changed') {
+      const pathString = `${path.join('')}${key.name}`;
+      const oldValue = _.isObject(key.oldValue) ? '[complex value]' : key.oldValue;
+      const typingOldValue = _.isBoolean(oldValue) || _.isNumber(oldValue) || oldValue === '[complex value]' ? oldValue : `'${key.oldValue}'`;
+      const newValue = _.isObject(key.newValue) ? '[complex value]' : key.newValue;
+      const typingNewValue = _.isBoolean(newValue) || _.isNumber(newValue) || newValue === '[complex value]' ? newValue : `'${key.newValue}'`;
+      resultString.push(`Property '${pathString}' was changed from ${typingOldValue} to ${typingNewValue}`);
+    }
+  });
 
-  if (_.isObject(object[key])) {
-    const newPath = `${path}.${key}`;
-    const newAcc = `${acc.trimLeft()}${toStringPlainStyle(object[key], newPath)}`;
-    return toStringPlainStyle(object, path, newAcc, keyNum + 1);
-  }
-
-  return toStringPlainStyle(object, path, acc, keyNum + 1);
+  return resultString.flat().join('\n');
 };
 
 export default toStringPlainStyle;

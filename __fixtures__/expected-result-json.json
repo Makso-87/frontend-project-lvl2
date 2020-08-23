@@ -1,201 +1,82 @@
-[
-  {
-    "name": "common",
-    "currentValue": {
-      "setting1": "Value 1",
+{
+  "common": {
+    "status": "nested",
+    "children": {
+      "setting1": {
+        "status": "unchanged",
+        "value": "Value 1"
+      },
+      "setting2": {
+        "status": "removed",
+        "value": 200
+      },
       "setting3": {
-        "key": "value"
-      },
-      "setting6": {
-        "key": "value",
-        "ops": "vops"
-      },
-      "follow": false,
-      "setting4": "blah blah",
-      "setting5": {
-        "key5": "value5"
-      }
-    },
-    "oldValue": {
-      "setting1": "Value 1",
-      "setting2": 200,
-      "setting3": true,
-      "setting6": {
-        "key": "value"
-      }
-    },
-    "wasChanged": true,
-    "wasAdded": false,
-    "wasDeleted": false,
-    "children": [
-      {
-        "name": "setting1",
-        "currentValue": "Value 1",
-        "oldValue": "Value 1",
-        "wasChanged": false,
-        "wasAdded": false,
-        "wasDeleted": false,
-        "children": false
-      },
-      {
-        "name": "setting2",
-        "currentValue": 200,
-        "oldValue": 200,
-        "wasChanged": false,
-        "wasAdded": false,
-        "wasDeleted": true,
-        "children": false
-      },
-      {
-        "name": "setting3",
-        "currentValue": {
-          "key": "value"
-        },
+        "status": "changed",
         "oldValue": true,
-        "wasChanged": true,
-        "wasAdded": false,
-        "wasDeleted": false,
-        "children": false
-      },
-      {
-        "name": "setting6",
-        "currentValue": {
-          "key": "value",
-          "ops": "vops"
+        "newValue": {
+            "key": "value"
         },
-        "oldValue": {
-          "key": "value"
-        },
-        "wasChanged": true,
-        "wasAdded": false,
-        "wasDeleted": false,
-        "children": [
-          {
-            "name": "key",
-            "currentValue": "value",
-            "oldValue": "value",
-            "wasChanged": false,
-            "wasAdded": false,
-            "wasDeleted": false,
-            "children": false
-          },
-          {
-            "name": "ops",
-            "currentValue": "vops",
-            "oldValue": "vops",
-            "wasChanged": false,
-            "wasAdded": true,
-            "wasDeleted": false,
-            "children": false
+        "setting6": {
+          "status": "nested",
+          "children": {
+            "key": {
+              "status": "unchanged",
+              "value": "value"
+            },
+            "ops": {
+              "status": "added",
+              "value": "vops"
+            }
           }
-        ]
-      },
-      {
-        "name": "follow",
-        "currentValue": false,
-        "oldValue": false,
-        "wasChanged": false,
-        "wasAdded": true,
-        "wasDeleted": false,
-        "children": false
-      },
-      {
-        "name": "setting4",
-        "currentValue": "blah blah",
-        "oldValue": "blah blah",
-        "wasChanged": false,
-        "wasAdded": true,
-        "wasDeleted": false,
-        "children": false
-      },
-      {
-        "name": "setting5",
-        "currentValue": {
-          "key5": "value5"
         },
-        "oldValue": {
-          "key5": "value5"
+        "follow": {
+          "status": "added",
+          "value": false
         },
-        "wasChanged": false,
-        "wasAdded": true,
-        "wasDeleted": false,
-        "children": false
+        "setting4": {
+          "status": "added",
+          "value": "blah blah"
+        },
+        "setting5": {
+          "status": "added",
+          "value": {
+            "key5": "value5"
+          }
+        }
       }
-    ]
+    }
   },
-  {
-    "name": "group1",
-    "currentValue": {
-      "baz": "bars",
-      "foo": "bar",
-      "nest": "str"
-    },
-    "oldValue": {
-      "baz": "bas",
-      "foo": "bar",
+  "group1": {
+    "status": "nested",
+    "children": {
+      "baz": {
+        "status": "changed",
+        "oldValue": "bars",
+        "newValue": "bas"
+      },
+      "foo": {
+        "status": "unchanged",
+        "value": "bar"
+      },
       "nest": {
-        "key": "value"
-      }
-    },
-    "wasChanged": true,
-    "wasAdded": false,
-    "wasDeleted": false,
-    "children": [
-      {
-        "name": "baz",
-        "currentValue": "bars",
-        "oldValue": "bas",
-        "wasChanged": true,
-        "wasAdded": false,
-        "wasDeleted": false,
-        "children": false
-      },
-      {
-        "name": "foo",
-        "currentValue": "bar",
-        "oldValue": "bar",
-        "wasChanged": false,
-        "wasAdded": false,
-        "wasDeleted": false,
-        "children": false
-      },
-      {
-        "name": "nest",
-        "currentValue": "str",
+        "status": "changed",
         "oldValue": {
-          "key": "value"
+            "key": "value"
         },
-        "wasChanged": true,
-        "wasAdded": false,
-        "wasDeleted": false,
-        "children": false
+        "newValue": "str"
       }
-    ]
+    }
   },
-  {
-    "name": "group2",
-    "currentValue": {
+  "group2": {
+    "status": "removed",
+    "value": {
       "abc": 12345
-    },
-    "oldValue": {
-      "abc": 12345
-    },
-    "wasChanged": false,
-    "wasAdded": false,
-    "wasDeleted": true,
-    "children": false
+    }
   },
-  {
-    "name": "group3",
-    "currentValue": {
+  "group3": {
+    "status": "added",
+    "value": {
       "fee": 100500
-    },
-    "oldValue": {
-      "fee": 100500
-    },
-    "wasChanged": false,
-    "wasAdded": true,
-    "wasDeleted": false,
-    "children": false
+    }
   }
-]
+}
