@@ -1,17 +1,12 @@
-import toStringJsonStyle from './stylish';
-import toStringPlainStyle from './plain';
-import toJsonStyle from './json';
+import makePlain from './plain';
+import makeStylish from './stylish';
 
-const convertToFormat = (object, format) => {
-  if (format === 'plain') {
-    return toStringPlainStyle(object);
-  }
-
-  if (format === 'json') {
-    return JSON.stringify(toJsonStyle(object), null, '  ');
-  }
-
-  return toStringJsonStyle(object);
+const formaters = {
+  plain: makePlain,
+  json: (object) => JSON.stringify(object, null, '  '),
+  stylish: makeStylish,
 };
+
+const convertToFormat = (object, format) => formaters[format](object);
 
 export default convertToFormat;

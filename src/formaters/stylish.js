@@ -1,24 +1,43 @@
 import _ from 'lodash';
 
-const toStringJsonStyle = (object, indent = 4, acc = '{', keyNum = 0) => {
-  const keys = Object.keys(object);
-  const key = keys[keyNum];
-
-  if (keyNum > keys.length - 1) {
-    const newIndent = indent - 4;
-    const newAcc = `${acc}\n${' '.repeat(newIndent)}}`;
-    return newAcc;
+const objectToString = (value, indent) => {
+  if (!_.isObject(value)) {
+    return value;
   }
 
-  if (_.isObject(object[key])) {
-    const newIndent = `${key}`[0] === '+' || `${key}`[0] === '-' ? indent - 2 : indent;
-    const newAcc = `${acc}\n${' '.repeat(newIndent)}${key}: ${toStringJsonStyle(object[key], indent + 4)}`;
-    return toStringJsonStyle(object, indent, newAcc, keyNum + 1);
-  }
-
-  const newIndent = `${key}`[0] === '+' || `${key}`[0] === '-' ? indent - 2 : indent;
-  const newAcc = `${acc}\n${' '.repeat(newIndent)}${key}: ${object[key]}`;
-  return toStringJsonStyle(object, indent, newAcc, keyNum + 1);
+  const space = ' ';
+  const result = [['{'], _.keys(value).flatMap((key) => `${space.repeat(indent)}${key}: ${value[`${key}`]}`)];
+  result.push(`${space.repeat(indent - 4)}}`);
+  return result.join('\n');
 };
 
-export default toStringJsonStyle;
+const makeStylish = (tree) => {
+  const iterate = (node, indent = 4) => node.flatMap((nodeItem) => {
+    const {
+      name, value, status, children, oldValue, newValue,
+    } = nodeItem;
+
+    const space = ' ';
+
+    switch (status) {
+      case 'nested':
+        return `${space.repeat(indent)}${name}: {\n${iterate(children, indent + 4).join('')}${space.repeat(indent)}}\n`;
+      case 'added':
+        return `${space.repeat(indent - 2)}+ ${name}: ${objectToString(value, indent + 4)}\n`;
+      case 'changed':
+        return [`${space.repeat(indent - 2)}+ ${name}: ${objectToString(newValue, indent + 4)}\n`, `${space.repeat(indent - 2)}- ${name}: ${objectToString(oldValue, indent + 4)}\n`];
+      case 'removed':
+        return `${space.repeat(indent - 2)}- ${name}: ${objectToString(value, indent + 4)}\n`;
+      case 'unchanged':
+        return `${space.repeat(indent)}${name}: ${objectToString(value, indent + 4)}\n`;
+      default: throw new Error(`${status} is undefined status`);
+    }
+  });
+
+  const result = ['{\n'];
+  result.push(iterate(tree).join(''));
+  result.push('}');
+  return result.join('');
+};
+
+export default makeStylish;

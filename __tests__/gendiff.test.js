@@ -23,12 +23,12 @@ test.each([
   const path1 = getFixturePath(`file1.${format}`);
   const path2 = getFixturePath(`file2.${format}`);
 
-  // const actualStylishResult = genDiff(path1, path2, 'stylish');
-  // expect(actualStylishResult).toEqual(expectedStylishResult);
+  const actualStylishResult = genDiff(path1, path2, 'stylish');
+  expect(actualStylishResult).toEqual(expectedStylishResult);
 
   const actualPlainResult = genDiff(path1, path2, 'plain');
   expect(actualPlainResult).toEqual(expectedPlainResult);
 
-  // const actualJsonResult = genDiff(path1, path2, 'json');
-  // expect(actualJsonResult).toEqual(expectedJsonResult);
+  const actualJsonResult = genDiff(path1, path2, 'json');
+  expect(actualJsonResult).toEqual(expectedJsonResult);
 });

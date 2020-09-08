@@ -1,39 +1,49 @@
-import _ from 'lodash';
-
-const toStringPlainStyle = (tree, path = []) => {
-  const result = tree.flatMap((key) => {
-    if (key.status === 'nested') {
-      path.push(`${key.name}.`);
-      const newPath = [...path];
-      path.pop();
-      return toStringPlainStyle(key.children, newPath);
-    }
-
-    if (key.status === 'added') {
-      const pathString = `${path.join('')}${key.name}`;
-      const value = _.isObject(key.value) ? '[complex value]' : key.value;
-      const typingValue = _.isBoolean(value) || _.isNumber(value) || value === '[complex value]' ? value : `'${key.value}'`;
-      return `Property '${pathString}' was added with value: ${typingValue}`;
-    }
-
-    if (key.status === 'changed') {
-      const pathString = `${path.join('')}${key.name}`;
-      const oldValue = _.isObject(key.oldValue) ? '[complex value]' : key.oldValue;
-      const typingOldValue = _.isBoolean(oldValue) || _.isNumber(oldValue) || oldValue === '[complex value]' ? oldValue : `'${key.oldValue}'`;
-      const newValue = _.isObject(key.newValue) ? '[complex value]' : key.newValue;
-      const typingNewValue = _.isBoolean(newValue) || _.isNumber(newValue) || newValue === '[complex value]' ? newValue : `'${key.newValue}'`;
-      return `Property '${pathString}' was changed from ${typingOldValue} to ${typingNewValue}`;
-    }
-
-    if (key.status === 'removed') {
-      const pathString = `${path.join('')}${key.name}`;
-      return `Property '${pathString}' was deleted`;
-    }
-
-    return [];
-  });
-
-  return result.join('\n');
+const getFullNameProp = (array, name) => {
+  const string = `${array.join('.')}.${name}`;
+  return string[0] === '.' ? string.slice(1) : string;
 };
 
-export default toStringPlainStyle;
+const getCorrectValue = (value) => {
+  switch (typeof value) {
+    case 'object':
+      return '[complex value]';
+    case 'string':
+      return `'${value}'`;
+    case 'boolean':
+      return value;
+    case 'number':
+      return value;
+    default:
+      return value;
+  }
+};
+
+const makePlain = (tree) => {
+  const iterate = (node, paths = []) => node.flatMap((nodeItem) => {
+    const {
+      name, value, status, children, oldValue, newValue,
+    } = nodeItem;
+    let newPaths;
+
+    switch (status) {
+      case 'nested':
+        paths.push(`${name}`);
+        newPaths = [...paths];
+        paths = paths.filter((item, index) => index < paths.length - 1);
+        return iterate(children, newPaths);
+      case 'added':
+        return `Property '${getFullNameProp(paths, name)}' was added with value: ${getCorrectValue(value)}`;
+      case 'changed':
+        return `Property '${getFullNameProp(paths, name)}' was changed from ${getCorrectValue(oldValue)} to ${getCorrectValue(newValue)}`;
+      case 'removed':
+        return `Property '${getFullNameProp(paths, name)}' was deleted`;
+      case 'unchanged':
+        return [];
+      default: throw new Error(`${status} is undefined status`);
+    }
+  });
+
+  return iterate(tree).join('\n');
+};
+
+export default makePlain;
