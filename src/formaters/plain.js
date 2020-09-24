@@ -1,49 +1,41 @@
-const getFullNameProp = (array, name) => {
-  const string = `${array.join('.')}.${name}`;
-  return string[0] === '.' ? string.slice(1) : string;
+const makeFullPuthProp = (array, name) => {
+  const newArr = [...array, name];
+  return `${newArr.join('.')}`;
 };
 
-const getCorrectValue = (value) => {
+const getFormattedValue = (value) => {
   switch (typeof value) {
     case 'object':
       return '[complex value]';
     case 'string':
       return `'${value}'`;
-    case 'boolean':
-      return value;
-    case 'number':
-      return value;
     default:
       return value;
   }
 };
 
 const makePlain = (tree) => {
-  const iterate = (node, paths = []) => node.flatMap((nodeItem) => {
+  const iter = (node, paths = []) => node.flatMap((nodeItem) => {
     const {
       name, value, status, children, oldValue, newValue,
     } = nodeItem;
-    let newPaths;
 
     switch (status) {
       case 'nested':
-        paths.push(`${name}`);
-        newPaths = [...paths];
-        paths = paths.filter((item, index) => index < paths.length - 1);
-        return iterate(children, newPaths);
+        return iter(children, [...paths, `${name}`]);
       case 'added':
-        return `Property '${getFullNameProp(paths, name)}' was added with value: ${getCorrectValue(value)}`;
+        return `Property '${makeFullPuthProp(paths, name)}' was added with value: ${getFormattedValue(value)}`;
       case 'changed':
-        return `Property '${getFullNameProp(paths, name)}' was changed from ${getCorrectValue(oldValue)} to ${getCorrectValue(newValue)}`;
+        return `Property '${makeFullPuthProp(paths, name)}' was changed from ${getFormattedValue(oldValue)} to ${getFormattedValue(newValue)}`;
       case 'removed':
-        return `Property '${getFullNameProp(paths, name)}' was deleted`;
+        return `Property '${makeFullPuthProp(paths, name)}' was deleted`;
       case 'unchanged':
         return [];
       default: throw new Error(`${status} is undefined status`);
     }
   });
 
-  return iterate(tree).join('\n');
+  return iter(tree).join('\n');
 };
 
 export default makePlain;

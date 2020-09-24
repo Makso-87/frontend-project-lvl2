@@ -1,9 +1,10 @@
 import makePlain from './plain';
 import makeStylish from './stylish';
+import makeJSON from './json';
 
 const formaters = {
   plain: makePlain,
-  json: (object) => JSON.stringify(object, null, '  '),
+  json: makeJSON,
   stylish: makeStylish,
 };
 

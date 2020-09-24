@@ -4,8 +4,7 @@ import buildDiff from './buildDiff';
 import parseData from './parsers';
 import convertToFormat from './formaters';
 
-const getFormatName = (filePath) => path.extname(filePath).replace('.', '');
-
+const getFormatName = (filePath) => path.extname(filePath).slice(1);
 
 const genDiff = (filepath1, filepath2, format) => {
   const data1 = fs.readFileSync(filepath1, 'utf-8');

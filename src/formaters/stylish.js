@@ -1,43 +1,57 @@
 import _ from 'lodash';
 
-const objectToString = (value, indent) => {
+const getIndent = (num) => ' '.repeat(num);
+
+const getFormattedValue = (value, indent) => {
   if (!_.isObject(value)) {
     return value;
   }
 
-  const space = ' ';
-  const result = [['{'], _.keys(value).flatMap((key) => `${space.repeat(indent)}${key}: ${value[`${key}`]}`)];
-  result.push(`${space.repeat(indent - 4)}}`);
+  const iter = (obj, indt) => {
+    const indentForNested = indt + 4;
+
+    return _.keys(obj).flatMap((key) => {
+      if (_.isObject(obj[key])) {
+        return `\n${getIndent(indentForNested)}${key}: {\n${iter(obj[key], indentForNested).join('\n')}${getIndent(indentForNested)}}\n`;
+      }
+
+      return `${getIndent(indentForNested)}${key}: ${obj[`${key}`]}`;
+    });
+  };
+
+  const result = [['{'], iter(value, indent)];
+  result.push(`${getIndent(indent)}}`);
   return result.join('\n');
 };
 
 const makeStylish = (tree) => {
-  const iterate = (node, indent = 4) => node.flatMap((nodeItem) => {
+  const iter = (node, indent = 4) => node.flatMap((nodeItem) => {
     const {
       name, value, status, children, oldValue, newValue,
     } = nodeItem;
 
-    const space = ' ';
+    const indentForNested = indent + 4;
+    const indentForOthers = indent - 2;
 
     switch (status) {
       case 'nested':
-        return `${space.repeat(indent)}${name}: {\n${iterate(children, indent + 4).join('')}${space.repeat(indent)}}\n`;
+        return `${getIndent(indent)}${name}: {\n${iter(children, indentForNested).join('')}${getIndent(indent)}}\n`;
       case 'added':
-        return `${space.repeat(indent - 2)}+ ${name}: ${objectToString(value, indent + 4)}\n`;
+        return `${getIndent(indentForOthers)}+ ${name}: ${getFormattedValue(value, indent)}\n`;
       case 'changed':
-        return [`${space.repeat(indent - 2)}+ ${name}: ${objectToString(newValue, indent + 4)}\n`, `${space.repeat(indent - 2)}- ${name}: ${objectToString(oldValue, indent + 4)}\n`];
+        return [
+          `${getIndent(indentForOthers)}+ ${name}: ${getFormattedValue(newValue, indent)}\n`,
+          `${getIndent(indentForOthers)}- ${name}: ${getFormattedValue(oldValue, indent)}\n`,
+        ];
       case 'removed':
-        return `${space.repeat(indent - 2)}- ${name}: ${objectToString(value, indent + 4)}\n`;
+        return `${getIndent(indentForOthers)}- ${name}: ${getFormattedValue(value, indent)}\n`;
       case 'unchanged':
-        return `${space.repeat(indent)}${name}: ${objectToString(value, indent + 4)}\n`;
+        return `${getIndent(indent)}${name}: ${getFormattedValue(value, indent)}\n`;
       default: throw new Error(`${status} is undefined status`);
     }
   });
 
-  const result = ['{\n'];
-  result.push(iterate(tree).join(''));
-  result.push('}');
-  return result.join('');
+  return `{\n${iter(tree).join('')}}`;
 };
 
 export default makeStylish;
