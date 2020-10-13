@@ -2,23 +2,18 @@ import yaml from 'js-yaml';
 import ini from 'ini';
 import _ from 'lodash';
 
-const fixNumber = (value) => {
-  const number = !_.isBoolean(value) ? Number(value) : value;
-  return _.isNumber(number) && !_.isNaN(number) ? number : value;
-};
-
-const iniParse = (data) => {
+const parseIni = (data) => {
   const parsedData = ini.parse(data);
 
-  const iter = (obj) => _.mapValues(obj, (value) => {
+  const transformStrToNum = (obj) => _.mapValues(obj, (value) => {
     if (_.isObject(value)) {
-      return iter(value);
+      return transformStrToNum(value);
     }
 
-    return fixNumber(value);
+    return _.isNumber(parseFloat(value)) && !_.isNaN(parseFloat(value)) ? parseFloat(value) : value;
   });
 
-  const result = iter(parsedData);
+  const result = transformStrToNum(parsedData);
 
   return result;
 };
@@ -26,7 +21,7 @@ const iniParse = (data) => {
 const parsers = {
   json: JSON.parse,
   yml: yaml.safeLoad,
-  ini: iniParse,
+  ini: parseIni,
 };
 
 const parseData = (data, formatName) => parsers[formatName](data);

@@ -1,7 +1,4 @@
-const makeFullPuthProp = (array, name) => {
-  const newArr = [...array, name];
-  return `${newArr.join('.')}`;
-};
+const getFullPropertyName = (array, name) => [...array, name].join('.');
 
 const getFormattedValue = (value) => {
   switch (typeof value) {
@@ -17,18 +14,18 @@ const getFormattedValue = (value) => {
 const makePlain = (tree) => {
   const iter = (node, paths = []) => node.flatMap((nodeItem) => {
     const {
-      name, value, status, children, oldValue, newValue,
+      name, value, status, children, value1, value2,
     } = nodeItem;
 
     switch (status) {
       case 'nested':
-        return iter(children, [...paths, `${name}`]);
+        return iter(children, [...paths, name]);
       case 'added':
-        return `Property '${makeFullPuthProp(paths, name)}' was added with value: ${getFormattedValue(value)}`;
+        return `Property '${getFullPropertyName(paths, name)}' was added with value: ${getFormattedValue(value)}`;
       case 'changed':
-        return `Property '${makeFullPuthProp(paths, name)}' was changed from ${getFormattedValue(oldValue)} to ${getFormattedValue(newValue)}`;
+        return `Property '${getFullPropertyName(paths, name)}' was changed from ${getFormattedValue(value1)} to ${getFormattedValue(value2)}`;
       case 'removed':
-        return `Property '${makeFullPuthProp(paths, name)}' was deleted`;
+        return `Property '${getFullPropertyName(paths, name)}' was deleted`;
       case 'unchanged':
         return [];
       default: throw new Error(`${status} is undefined status`);

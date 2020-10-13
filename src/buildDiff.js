@@ -2,6 +2,7 @@ import _ from 'lodash';
 
 const buildDiff = (obj1, obj2) => {
   const keys = _.union(_.keys(obj1), _.keys(obj2));
+  _.sortBy(keys);
 
   const tree = keys.map((key) => {
     if (!_.has(obj1, key)) {
@@ -31,8 +32,8 @@ const buildDiff = (obj1, obj2) => {
     if (obj1[key] !== obj2[key]) {
       return {
         name: key,
-        oldValue: obj1[key],
-        newValue: obj2[key],
+        value1: obj1[key],
+        value2: obj2[key],
         status: 'changed',
       };
     }

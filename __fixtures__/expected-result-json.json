@@ -14,8 +14,8 @@
       },
       {
         "name": "setting3",
-        "oldValue": true,
-        "newValue": {
+        "value1": true,
+        "value2": {
           "key": "value"
         },
         "status": "changed"
@@ -61,8 +61,8 @@
     "children": [
       {
         "name": "baz",
-        "oldValue": "bas",
-        "newValue": "bars",
+        "value1": "bas",
+        "value2": "bars",
         "status": "changed"
       },
       {
@@ -72,10 +72,10 @@
       },
       {
         "name": "nest",
-        "oldValue": {
+        "value1": {
           "key": "value"
         },
-        "newValue": "str",
+        "value2": "str",
         "status": "changed"
       }
     ],
