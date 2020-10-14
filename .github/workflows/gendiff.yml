@@ -1,5 +1,4 @@
 # This is a basic workflow to help you get started with Actions
-# This is a basic workflow to help you get started with Actions
 
 name: gendiff
 
@@ -25,18 +24,17 @@ jobs:
       
      # Runs a single command using the runners shell
     - name: installation-npm
-      run: npm install
+      run: make install
 
     # Runs a single command using the runners shell
     - name: run-main-lint
-      run: npx eslint
+      run: make lint
       # Runs a single command using the runners shell
     - name: run-main-test
-      run: npm test
+      run: make test
     - name: Test & publish code coverage
       uses: paambaati/codeclimate-action@v2.6.0
       env:
         CC_TEST_REPORTER_ID: 26e2cc33c3f8cb00e669a64ed705147b564c67fd085a9d00e45740cc8775fd14
       with:
-        coverageCommand: npx jest --coverage
-        debug: true
+        coverageCommand: make coverage
