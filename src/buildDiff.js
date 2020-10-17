@@ -2,9 +2,9 @@ import _ from 'lodash';
 
 const buildDiff = (obj1, obj2) => {
   const keys = _.union(_.keys(obj1), _.keys(obj2));
-  _.sortBy(keys);
+  const sortedKeys = _.sortBy(keys);
 
-  const tree = keys.map((key) => {
+  const tree = sortedKeys.map((key) => {
     if (!_.has(obj1, key)) {
       return {
         name: key,

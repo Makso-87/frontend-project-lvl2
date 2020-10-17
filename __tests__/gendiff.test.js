@@ -18,7 +18,7 @@ beforeAll(() => {
 test.each([
   'json',
   'yml',
-  'ini'
+  'ini',
 ])('gendiff-%s', (format) => {
   const path1 = getFixturePath(`file1.${format}`);
   const path2 = getFixturePath(`file2.${format}`);

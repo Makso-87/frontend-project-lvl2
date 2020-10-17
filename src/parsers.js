@@ -10,7 +10,7 @@ const parseIni = (data) => {
       return transformStrToNum(value);
     }
 
-    return _.isNumber(parseFloat(value)) && !_.isNaN(parseFloat(value)) ? parseFloat(value) : value;
+    return !Number.isNaN(parseFloat(value)) ? parseFloat(value) : value;
   });
 
   const result = transformStrToNum(parsedData);

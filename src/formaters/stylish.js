@@ -7,24 +7,16 @@ const getFormattedValue = (value, indent) => {
     return value;
   }
 
-  const iter = (obj, indt) => {
-    const indentForNested = indt + 4;
+  const indentForNested = indent + 4;
+  const result = Object.entries(value).flatMap(([key, val]) => {
+    if (!_.isObject(val)) {
+      return `${getIndent(indentForNested)}  ${key}: ${val}`;
+    }
 
-    return _.keys(obj).flatMap((key) => {
-      if (!_.isObject(obj[key])) {
-        return `${getIndent(indentForNested)}  ${key}: ${obj[`${key}`]}`;
-      }
+    return `${getIndent(indentForNested)}  ${key}: {\n${getFormattedValue(val, indentForNested).join('\n')}\n${getIndent(indentForNested)}  }`;
+  });
 
-      return [
-        `${getIndent(indentForNested)}  ${key}: {`,
-        `${iter(obj[key], indentForNested).join('\n')}`,
-        `${getIndent(indentForNested)}  }`,
-      ].join('\n');
-    });
-  };
-
-  const result = ['{', iter(value, indent).join('\n'), `${getIndent(indent)}  }`];
-  return result.join('\n');
+  return `{\n${result.join('\n')}\n${getIndent(indent)}  }`;
 };
 
 const makeStylish = (tree) => {
@@ -35,11 +27,7 @@ const makeStylish = (tree) => {
 
     switch (status) {
       case 'nested':
-        return [
-          `${getIndent(indent)}  ${name}: {`,
-          `${iter(children, indent + 4).join('\n')}`,
-          `${getIndent(indent)}  }`,
-        ].join('\n');
+        return `${getIndent(indent)}  ${name}: {\n${iter(children, indent + 4).join('\n')}\n${getIndent(indent)}  }`;
       case 'added':
         return `${getIndent(indent)}+ ${name}: ${getFormattedValue(value, indent)}`;
       case 'changed':
@@ -55,7 +43,7 @@ const makeStylish = (tree) => {
     }
   });
 
-  return ['{', `${iter(tree).join('\n')}`, '}'].join('\n');
+  return `{\n${iter(tree).join('\n')}\n}`;
 };
 
 export default makeStylish;
