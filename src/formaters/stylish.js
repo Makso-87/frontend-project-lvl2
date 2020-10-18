@@ -20,10 +20,10 @@ const getFormattedValue = (value, indent) => {
 };
 
 const makeStylish = (tree) => {
-  const iter = (node, indent = 2) => node.flatMap((nodeItem) => {
+  const iter = (nodes, indent = 2) => nodes.flatMap((nodesItem) => {
     const {
       name, value, status, children, value1, value2,
-    } = nodeItem;
+    } = nodesItem;
 
     switch (status) {
       case 'nested':
